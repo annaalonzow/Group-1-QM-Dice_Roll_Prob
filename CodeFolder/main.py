@@ -1,5 +1,6 @@
 #Comments is reccomended.
 #This is your starter code. For coders, copy this code and code at your own risk.
+#Once all coders are done, we will compare the code and vote on which one is the best. This will be changed soon.
 
 import random
 import collections
