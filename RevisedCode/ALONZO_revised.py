@@ -12,7 +12,7 @@ import collections
 import matplotlib.pyplot as plt
 import sys
 
-#simulates the rolls.
+# simulates the rolls.
 def simulate_rolls(n):
 
     # Simulates "n" dice rolls and stores the result of each roll.
@@ -43,34 +43,47 @@ def display_graphs(simulations):
 
     faces = list(range(1, 7))
 
-    # Loops through each simulation and generates its probability graph. "Line 15-33"
+    # Loops through each simulation and generates its probability graph.
     for i, sim in enumerate(simulations):
         n = sim['n']
         data = sim['data']
         probabilities = [data[face]['probability'] for face in faces]
         ax = axes[i]
 
-        # Displays the experimental probabilities as a bar chart.
-        ax.bar(faces, probabilities, color='skyblue', edgecolor='black',
-               label=f"Experimental", alpha=0.8)
-
-        # Displays the theoretical probability (1/6 ≈ 16.67%) as a reference line.
-        ax.axhline(1 / 6, color="red", linestyle="--", linewidth=2,
-                   label="Theoretical (1/6)")
+        # Blaza's unique code 1
+        ax.bar(
+            faces,
+            probabilities,
+            alpha=0.75,
+            color='skyblue',
+            edgecolor='black',
+            label=f"Exp. Prob. (n={n})",
+            zorder=2
+        )
+        
+        ax.axhline(
+            y=1 / 6,
+            color="red",
+            linestyle="--",
+            linewidth=2,
+            label="Theo. Prob. (1/6)",
+            zorder=3
+        )
 
         # labels and texts inside the figure
         ax.set_xlabel("Die Face", fontsize=10)
         ax.set_ylabel("Probability", fontsize=10)
         ax.set_title(f"Trial {i + 1} (N={n})", fontsize=12, fontweight='bold')
         ax.set_xticks(faces)
-        ax.set_ylim(0, max(probabilities) + 0.05)  # Add a tiny space above the tallest bar
+        ax.set_ylim(0, max(max(probabilities) + 0.05, 0.25))  # Prevents legend overlap
         ax.legend(loc="upper right", fontsize=8)
 
-    plt.suptitle("Dice Roll Probability Convergence Comparison", fontsize=14, fontweight='bold', y=1.02)
+    # Cleaned up layout to prevent title and labels from overlapping
+    plt.suptitle("Dice Roll Probability Convergence Comparison", fontsize=14, fontweight='bold')
     plt.tight_layout()
     plt.show()
 
-# Displays the frequency and probability results for each simulation. "3" option
+# Displays the frequency and probability results for each simulation.
 def display_percentages(simulations):
     theoretical_prob = (1 / 6) * 100
 
@@ -78,16 +91,19 @@ def display_percentages(simulations):
         n = sim['n']
         data = sim['data']
 
-        print(f"\n================ [ TRIAL {i + 1}: N = {n} ROLLS ] ================")
-        print(f"{'Face':<8} | {'Frequency (Count)':<18} | {'Experimental %':<16} | {'Theoretical %':<15}")
-        print("-" * 68)
+        # Blaza's unique code 2
+        print(f"\nTheoretical Probability for each face = 1/6 ≈ 0.1667 (16.67%)")
+        print(f"Results for {n} Rolls (Trial {i + 1})\n")
+
+        print(f"{'Face':<10}{'Frequency':<15}{'Experimental Probability':<35:}{'Theoretical Probability'}")
+        print("-" * 110)
 
         for face in range(1, 7):
             freq = data[face]['frequency']
-            exp_pct = data[face]['probability'] * 100
-            print(f"Dice {face:<3} | {freq:<18} | {exp_pct:>13.2f}% | {theoretical_prob:>13.2f}%")
+            prob = data[face]['probability']
+            print(f"{face:<10}{freq:<15}{prob:<35.4f}{1/6:.4f}") 
 
-        print("-" * 68)
+        print("-" * 110)
 
         # Displays a simple observation based on the number of rolls.
         if n < 100:
@@ -95,8 +111,7 @@ def display_percentages(simulations):
         elif n < 5000:
             print("Observation: Things are starting to settle down and steady out.")
         else:
-            print(
-                "Observation: woah, big numbers and it almost all the die faces hits the theoretical probability")
+            print("Observation: Woah, big numbers! Almost all the die faces hit the theoretical probability.")
 
     print("=================================================================\n")
 
@@ -148,39 +163,37 @@ def main():
             # Clears previous simulation data before running a new set of simulations.
             current_simulations.clear()
 
-            # data validation and ask the user how many times they want to roll the dice,
-            while True:
-                user_input = input("How many times would you like to roll the dice per trial? ")
-                try:
-                    rolls_count = int(user_input)
-                    if rolls_count <= 0:
-                        print("Please enter a positive number greater than 0.")
-                        continue
-                    break
-                except ValueError:
-                    print("Invalid input. Please enter a whole positive integer.")
-
-            # Ask how many separate simulation to simulate (up to 3) to compare them
+            # Ask how many separate simulations to compare
             while True:
                 comp_input = input("How many comparison trials would you like to run? (Maximum of 3): ")
                 try:
                     num_trials = int(comp_input)
-                    if num_trials < 1 or num_trials > 3:
-                        print("System constraint warning: You must choose between 1 and 3 trials.")
-                        continue
-                    break
+                    if 1 <= num_trials <= 3:
+                        break
+                    print("System constraint warning: You must choose between 1 and 3 trials.")
                 except ValueError:
                     print("Invalid input. Please enter a whole number between 1 and 3.")
 
-            # Runs the requested number of dice roll simulations.
-            print(f"\nProcessing {num_trials} independent simulations of {rolls_count} rolls each...")
-            for _ in range(num_trials):
+            # Let the user set the roll counts for each individual trial dynamically!
+            for t in range(num_trials):
+                while True:
+                    user_input = input(f"How many times would you like to roll the dice for Trial {t+1}? ")
+                    try:
+                        rolls_count = int(user_input)
+                        if rolls_count > 0:
+                            break
+                        print("Please enter a positive number greater than 0.")
+                    except ValueError:
+                        print("Invalid input. Please enter a whole positive integer.")
+
+                print(f"Processing Simulation {t+1} with {rolls_count} rolls...")
                 result_dataset = simulate_rolls(rolls_count)
                 current_simulations.append({
                     'n': rolls_count,
                     'data': result_dataset
                 })
-            print("Simulations successfully saved to temporary program memory!")
+                
+            print("\nAll simulations successfully saved to temporary program memory!")
 
         elif choice == '2':
             # if no simulation yet, they would be back in menu otherwise it would generate the graph.

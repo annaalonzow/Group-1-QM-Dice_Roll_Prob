@@ -73,7 +73,8 @@ for face in faces:
             )
 
 
-# Kay Julie: Bar Chart Design (Legend)
+# Kay Julie: 
+# 1. Bar Chart Design (Legend)
 # (To be inserted by Erika)
  # Bar graph for experimental probabilities
     plt.bar(
@@ -92,3 +93,11 @@ for face in faces:
         label="Theoretical Probability (1/6)",
         zorder=3
     )
+#2. Console display (table like and others)
+# Show simulation results
+    print(f"\nTheoretical Probability for each face = 1/6 ≈ 0.1667 (16.67%)")
+
+    print(f"\nResults for {n} Rolls\n")
+
+    print(f"{'Face':<10}{'Frequency':<15}{'Experimental Probability':<35}{'Theoretical Probability'}")
+    print("-" * 110)
