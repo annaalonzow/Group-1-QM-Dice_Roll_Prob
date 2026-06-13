@@ -42,31 +42,55 @@ def display_graphs(simulations):
     axes = axes.flatten()
 
     faces = list(range(1, 7))
+    x = list(range(6))  # x positions for grouped bars
+    width = 0.35         # width of each bar in the group
 
-    # Loops through each simulation and generates its probability graph. "Line 15-33"
+    # Theoretical probability is the same for every face of a fair die
+    theoretical_probs = [1 / 6] * 6
+
+    # Loops through each simulation and generates its probability graph.
     for i, sim in enumerate(simulations):
         n = sim['n']
         data = sim['data']
-        probabilities = [data[face]['probability'] for face in faces]
+        experimental_probs = [data[face]['probability'] for face in faces]
         ax = axes[i]
 
-        # Displays the experimental probabilities as a bar chart.
-        ax.bar(faces, probabilities, color='skyblue', edgecolor='black',
-               label=f"Experimental", alpha=0.8)
+        # Displays the experimental probabilities as the left bar in each group. (Caballes)
+        bars = ax.bar(
+            [pos - width / 2 for pos in x],
+            experimental_probs,
+            width,
+            color='#195E97', edgecolor='black',
+            label="Experimental", alpha=0.8
+        )
 
-        # Displays the theoretical probability (1/6 ≈ 16.67%) as a reference line.
-        ax.axhline(1 / 6, color="red", linestyle="--", linewidth=2,
-                   label="Theoretical (1/6)")
+        # Adds percentage labels on top of each experimental (blue) bar. (Erika)
+        for bar, prob in zip(bars, experimental_probs):
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 0.003,
+                f"{prob * 100:.0f}%",
+                ha='center', va='bottom', fontsize=8, fontweight='bold'
+            )
 
-        # labels and texts inside the figure
+        # Displays the theoretical probabilities as the right bar in each group. (Caballes)
+        ax.bar(
+            [pos + width / 2 for pos in x],
+            theoretical_probs,
+            width,
+            color='orange', edgecolor='black',
+            label="Theoretical (1/6)", alpha=0.8
+        )
+
+        # labels and texts inside the figure (Caballes)
         ax.set_xlabel("Die Face", fontsize=10)
         ax.set_ylabel("Probability", fontsize=10)
         ax.set_title(f"Trial {i + 1} (N={n})", fontsize=12, fontweight='bold')
-        ax.set_xticks(faces)
-        ax.set_ylim(0, max(probabilities) + 0.05)  # Add a tiny space above the tallest bar
+        ax.set_xticks(x)
+        ax.set_xticklabels(faces)
+        ax.set_ylim(0, max(max(experimental_probs), 1 / 6) + 0.05)
         ax.legend(loc="upper right", fontsize=8)
 
-    plt.suptitle("Dice Roll Probability Convergence Comparison", fontsize=14, fontweight='bold', y=1.02)
     plt.tight_layout()
     plt.show()
 
