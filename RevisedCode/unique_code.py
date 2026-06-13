@@ -1,4 +1,5 @@
-# Insert only to certain parts of Prince's code 
+# Insert only to certain parts of Prince's code
+# Do not delete Prince's unique code: Comparison of Trials (up to 3 rolls per total number of rolls)
 
 # Coders' unqiue codes:
 
