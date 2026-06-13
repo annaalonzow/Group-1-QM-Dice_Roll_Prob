@@ -1,5 +1,7 @@
 # Insert only to certain parts of Prince's code
 # Do not delete Prince's unique code: Comparison of Trials (up to 3 rolls per total number of rolls)
+# Retain Main Menu for option choosing
+# Include the option to what is user's preferred bar chart design to display (2 options only)
 
 # Coders' unqiue codes:
 
