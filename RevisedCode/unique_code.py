@@ -6,6 +6,7 @@
 # Coders' unqiue codes:
 
 # Kay Caballes: Bar Chart Design (Two Bars, diff color)
+# (To be inserted by Nathan)
 # Create the graph
 faces = [1, 2, 3, 4, 5, 6]
 
@@ -39,6 +40,7 @@ plt.show()
 
 
 # Kay Quitollo: Difference from Theory (Console)
+# (To be inserted by Yuri)
 print("\nSUMMARY:")
     print(f"Total Trials (N): {n}")
     print("Face\tCount\tExperimental\tTheoretical\tDifference from Theory")
@@ -51,6 +53,7 @@ print("\nSUMMARY:")
 
 
 # Kay Edmark: Difference from Theory (Bar Chart)
+# (To be inserted by Lay Anne)
 # Label each bar with its probability value
     for bar, p in zip(bars, exp_prob):
         plt.text(
@@ -60,6 +63,7 @@ print("\nSUMMARY:")
 
 
 # Kay Charmie: Difference from Theory (Console)
+# (To be inserted by Alliyah)
 for face in faces:
         print(
             f"\nFace {face} appeared {counts[face]} times."
@@ -70,6 +74,7 @@ for face in faces:
 
 
 # Kay Julie: Bar Chart Design (Legend)
+# (To be inserted by Erika)
  # Bar graph for experimental probabilities
     plt.bar(
         faces,
